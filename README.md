@@ -2,7 +2,7 @@
 
 计划使用redisgo和zset实现排行榜
 
-TODO
+
 
 ## 关于zset
 
@@ -39,3 +39,15 @@ zrevrank rank 0 10
 zrevrank rank 0 10 withscores
 
 ```
+
+## 关于redisgo
+TODO
+## 关于redis部署
+TODO
+## 关于服务器设计
+TODO
+## 关于服务器实现
+TODO
+## 关于客户端设计
+TODO
+## 关于测试
