@@ -34,18 +34,123 @@ zrange rank 0 10
 zrange rank 0 10 withscores
 
 # 查看榜rank的 反向0-10排名的成员
-zrevrank rank 0 10 
+zrevrange rank 0 10 
 # 查看榜rank的 反向0-10排名的成员带上分数
-zrevrank rank 0 10 withscores
+zrevrange rank 0 10 withscores
+
+# 删除zset
+del rank
+```
+
+## 关于redigo
+[redigo](https://github.com/gomodule/redigo)
+
+安装
+go.mod
+```sh
+module ranksvr
+
+go 1.18
+
+require github.com/gomodule/redigo/redis v0.0.1
 
 ```
 
-## 关于redisgo
+```sh
+go mod tidy
+```
+
 TODO
+
 ## 关于redis部署
 TODO
-## 关于服务器设计
-TODO
+
+## 关于服务器接口设计
+
+基于redis和 http/proto 请求的排行榜设计
+
+支持增删改查
+
+1. 新增/更新 玩家分数
+2. 查询玩家分数
+3. 查询玩家排名
+4. 查询前五玩家
+5. 从榜上删除玩家数据
+6. 清空排行榜数据
+
+```proto
+// 新增/更新 玩家分数
+message UpdatePlayerRankInfoReq
+{
+  int64 roleid = 1;
+  int32 score  = 2;
+}
+
+message UpdatePlayerRankInfoRes
+{
+  int32 RetCode  = 1;
+}
+
+
+//玩家信息
+message PlayerInfo
+{
+	int64 roleid   = 1;
+  	int32 score    = 2;
+  	int32 rank     = 3;
+}
+
+
+// 查询玩家分数
+message QueryPlayerScoreReq
+{
+  int64 roleid = 1;
+}
+message QueryPlayerScoreRes
+{
+  PlayerInfo info   = 1;
+  int32 RetCode  	= 2;
+}
+
+// 查询玩家排名
+message QueryPlayerRankReq
+{
+  int64 roleid = 1;
+}
+message QueryPlayerRankRes
+{
+  PlayerInfo info   = 1;
+  int32 RetCode  	= 2;
+}
+
+// 查询前五玩家
+message QueryTop5RankReq
+{}
+message QueryTop5RankRes
+{
+  repeated PlayerInfo   = 1;
+  int32 RetCode 		= 2;
+}
+
+// 从榜上删除玩家数据
+message DeletePlayerRankReq
+{
+	int64 roleid = 1;
+}
+message DeletePlayerRankRes
+{
+  int32 RetCode 	= 1;
+}
+
+// 清空排行榜数据
+message ClearRankInof
+{}
+message ClearRankInof
+{
+  int32 RetCode 	= 1;
+}
+
+```
 ## 关于服务器实现
 TODO
 ## 关于客户端设计
