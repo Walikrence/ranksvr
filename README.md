@@ -63,7 +63,17 @@ go mod tidy
 TODO
 
 ## 关于redis部署
-TODO
+
+使用docker运行容器redis容器和redis容器，连接同一个网络
+```sh
+docker run -itd --name=ranksvr -v /c/ranksvr:/root -p 8096:22 --shm-size=3096m --privileged --network=redisnetwork my_fmgame
+docker run --name redis-container --network redisnetwork -d redis
+```
+
+在ranksvr容器中使用redis-cli连接redis容器
+```sh
+redis-cli -h redis-container
+```
 
 ## 关于服务器接口设计
 
